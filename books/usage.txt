@@ -1,0 +1,52 @@
+                     Chloe and Xinyan's books.py usage.txt                   
+
+NAME
+     books.py -- search books list
+
+SYNOPSIS
+     books.py [-t] titleString [-a] authorString [-y] yearString [-s [-T | -A | -Y]]
+     books.py [-h] 
+     books.py [-v]
+
+DESCRIPTION
+     In its first form, books.py will search through a books database by flag
+     (title, author, or year) for searchString, or applicable years for -y,
+     and returns a list of books. Flags can be used in any order, and any 
+     combination. When used in combination, order is determined by primary flag.
+
+     In its second form, users can view help or version statements. 
+
+     The following options are available:
+
+
+
+     -t --title      Search database for titles containing searchString
+	     (case-insensitive), returning list of books sorted by title. 
+
+     -a --author     Search database for authors containing searchString
+	     (case-insensitive), returning list of books sorted by surname,
+	     ties broken by given name.  
+
+     -y --year     Search database for books published within year range,
+	     inclusive, returning list of books sorted by publication year.
+	     range should be two years separated by a hyphen (e.g. "1900-1901")
+	     or one year ("1900"). 
+
+     -s --sort	  Override sorting list by alternative criteria. Options are 
+	     title, author, or year
+
+     -T --STitle	  Option for sort, sort by title.
+
+     -A --SAuthor	  Option for sort, sort by author surname.
+
+     -Y --SYear	  Option for sort, sort by publication date.
+
+     -h --help      Print usage statement
+
+     -v --version     Print version
+
+
+
+     It is an error for improper inputs, such as "abc" with the -y flag. 
+
+     It is an error if no flag follows -s.
