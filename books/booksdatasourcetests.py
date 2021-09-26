@@ -17,6 +17,28 @@ class BooksDataSourceTester(unittest.TestCase):
         authors = self.data_source.authors('Pratchett')
         self.assertTrue(len(authors) == 1)
         self.assertTrue(authors[0] == Author('Pratchett', 'Terry'))
+    
+    def test_case_test_author_default(self):
+        authors = self.data_source.authors()
+        self.assertTrue(len(authors) == 22)
+        self.assertTrue(authors[0] == Author('Austen','Jane'))
+
+    def test_author_space(self):
+        authors = self.data_source.authors('a C')
+        self.assertTrue(len(authors) == 1)
+        self.assertTrue(authors[0] == Author('Christie','Agatha'))
+
+    def test_author_sort(self):
+        authors1 = self.data_source.authors('brontë')
+        authors2 = self.data_source.authors('OR')
+        # self.assertTrue(len(authors) == 1)
+        self.assertTrue(authors1[0] == Author('Brontë','Ann'))
+        self.assertEqual(authors2[0], Author('Morrison','Toni'))
+        
+# V.E. schwab check 
+    def test_author_special_character(self):
+        authors1 = self.data_source.authors('.')
+        self.assertTrue(authors1[1] == Author('Schwab','V.E.'))
 
 # default case test 
 # "a C" agatha christie
