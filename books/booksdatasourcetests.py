@@ -1,6 +1,6 @@
 '''
    booksdatasourcetest.py
-   Jeff O, 24 September 2021
+   Chloe Morscheck Xinyan Xiang, 27 September 2021
 '''
 
 
@@ -8,6 +8,9 @@
 # robust error messaging - for when we do mulitple htings in one test
 # raises Value Error - can we write that in 
 # do we need quotes around input? how does that chnage funcitonality?
+# do we want to write mini csv for sorting tests
+# use more of the unittest library ?
+# E vs F in output
 
 import booksdatasource
 import unittest
