@@ -4,13 +4,9 @@
 '''
 
 
-# Questions
-# robust error messaging - for when we do mulitple htings in one test
-# raises Value Error - can we write that in 
-# do we need quotes around input? how does that chnage funcitonality?
-# do we want to write mini csv for sorting tests
+# Questions for future chloe and xinyan
+# robust error messaging - for when we do multiple things in one test
 # use more of the unittest library ?
-# E vs F in output
 
 import booksdatasource
 import unittest
@@ -21,6 +17,9 @@ class BooksDataSourceTester(unittest.TestCase):
 
     def tearDown(self):
         pass
+
+
+## tests for author function
 
 ## tests that a unique search returns proper author
     def test_unique_author(self):
@@ -43,16 +42,17 @@ class BooksDataSourceTester(unittest.TestCase):
 ## tests that both surname and first name sorting works,
 ## as well as tests case-insensitivity
     def test_author_sort(self):
-        authors1 = self.data_source.authors('brontë')
-        authors2 = self.data_source.authors('OR')
-        # self.assertTrue(len(authors) == 1)
-        self.assertTrue(authors1[0] == Author('Brontë','Ann'))
-        self.assertEqual(authors2[0], Author('Morrison','Toni'))
+        authorsBronte = self.data_source.authors('brontë')
+        authorsOr = self.data_source.authors('OR')
+        self.assertTrue(authorsBronte[0] == Author('Brontë','Ann'))
+        self.assertEqual(authorsOr[0], Author('Morrison','Toni'))
         
 # tests for special character
     def test_author_special_character(self):
-        authors1 = self.data_source.authors('.')
-        self.assertTrue(authors1[0] == Author('Schwab','V.E.'))
+        authors = self.data_source.authors('.')
+        self.assertTrue(authors[0] == Author('Schwab','V.E.'))
+
+## tests for books function
 
 ## tests that default search returns full list, properly sorted
     def test_books_sort_default(self):
@@ -90,6 +90,8 @@ class BooksDataSourceTester(unittest.TestCase):
         books = self.data_source.books("84")
         self.assertTrue(books[0] == Book("1Q84"))
         self.assertTrue(len(books) == 1) 
+
+## tests for books between years function
 
 ## tests that default with both years=None behaves properly
     def test_years_both_none(self):
