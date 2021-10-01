@@ -1,10 +1,7 @@
 #!/usr/bin/env python3
 '''
     booksdatasource.py
-    Jeff Ondich, 21 September 2021
-
-    For use in the "books" assignment at the beginning of Carleton's
-    CS 257 Software Design class, Fall 2021.
+    Chloe Morscheck Xinyan Xiang, 30 September 2021
 '''
 
 import csv
@@ -36,6 +33,13 @@ class Book:
 
 class BooksDataSource:
     def __init__(self, books_csv_file_name):
+        #self.booksList = []
+        #self.authorsList = []
+        # for each line:
+            # books and author
+            # search in authorsList for author. If author is not in authors list, create author object, add to authros list sorted!!,
+                    # otherwise use author in authors list for book
+        # sort by defaults - check sorted python docs or numpy sorting
         ''' The books CSV file format looks like this:
 
                 title,publication_year,author_description
@@ -57,6 +61,9 @@ class BooksDataSource:
             returns all of the Author objects. In either case, the returned list is sorted
             by surname, breaking ties using given name (e.g. Ann Brontë comes before Charlotte Brontë).
         '''
+        # make a new empty list
+        # iterate through authors list, if search text is in name, add to new list
+        # sort
         return []
 
     def books(self, search_text=None, sort_by='title'):
@@ -71,6 +78,9 @@ class BooksDataSource:
                 default -- same as 'title' (that is, if sort_by is anything other than 'year'
                             or 'title', just do the same thing you would do for 'title')
         '''
+        # make new empty list
+        # put books with search text in list
+        # if sorting is specified - sort
         return []
 
     def books_between_years(self, start_year=None, end_year=None):
@@ -84,5 +94,9 @@ class BooksDataSource:
             during start_year should be included. If both are None, then all books
             should be included.
         '''
+        # define a range, error check
+        # make new empty list
+        # books with valid publication date in range get added to list
+        # sort by year
         return []
 
