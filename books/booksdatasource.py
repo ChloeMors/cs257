@@ -67,14 +67,11 @@ class BooksDataSource:
                         self.authorsList.append(newAuthor)
                         bookObj.authors.append(newAuthor)
                 self.booksList.append(bookObj)
-        print(self.booksList)
-        print(self.authorsList)
+        #print(self.booksList)
+        #print(self.authorsList)
+        #display_books(self.booksList)
 
-                # string manipulation
-        # for each line:
-            # books and author
-            # search in authorsList for author. If author is not in authors list, create author object, add to authros list sorted!!,
-                    # otherwise use author in authors list for book
+
         # sort by defaults - check sorted python docs or numpy sorting
         ''' The books CSV file format looks like this:
 
@@ -136,7 +133,13 @@ class BooksDataSource:
         # sort by year
         return []
 
+    def display_books(self, booksList):
+        for book in booksList:
+            print(book.title + " " + str(book.publication_year))
+        pass
+
 def main():
     BooksDataSourceObject = BooksDataSource("books1.csv")
+    BooksDataSourceObject.display_books(BooksDataSourceObject.booksList)
 
 main()
