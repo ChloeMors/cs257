@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 '''
     booksdatasource.py
-    Chloe Morscheck Xinyan Xiang, 30 September 2021
+    Chloe Morscheck and Xinyan Xiang, 2 September 2021
 '''
 
 import csv
@@ -33,8 +33,30 @@ class Book:
 
 class BooksDataSource:
     def __init__(self, books_csv_file_name):
-        #self.booksList = []
-        #self.authorsList = []
+        self.booksList = []
+        self.authorsList = []
+        filename = "books1.csv"
+        with open(filename, 'r') as csvfile:
+            csvreader = csv.reader(csvfile)
+            for row in csvreader:
+                # Check for author
+                authorStringList = row[2].split(" and ")
+                for authorString in authorStringList:
+                    authorVars = authorString.split(" ")
+                    authorSurname = authorVars[-2]
+                    if (authorVars.len() == 4):
+                        authorFirstname = authorVars[0] + authorVars[1]
+                    else:
+                        authorFirstname = authorVars[0]
+                    for authorObj in authorsList:
+                        if (authorsObj == Author(authorSurname, authorFirstname)):
+                            pass
+                        else:
+                            # if author is not yet created, create and add to list
+                            # NOTE birth and death yesars currently not recorded
+                            authorsList.append(Author(authorSurname, authorFirstname))
+
+                # string manipulation
         # for each line:
             # books and author
             # search in authorsList for author. If author is not in authors list, create author object, add to authros list sorted!!,
