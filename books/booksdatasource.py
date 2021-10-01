@@ -40,21 +40,35 @@ class BooksDataSource:
             csvreader = csv.reader(csvfile)
             for row in csvreader:
                 # Check for author
+                # Do the book checker
+                bookObj = Book(row[0],int(row[1]),[])
                 authorStringList = row[2].split(" and ")
                 for authorString in authorStringList:
                     authorVars = authorString.split(" ")
                     authorSurname = authorVars[-2]
-                    if (authorVars.len() == 4):
+                    if (len(authorVars) == 4):
                         authorFirstname = authorVars[0] + authorVars[1]
                     else:
                         authorFirstname = authorVars[0]
-                    for authorObj in authorsList:
+                    if len(self.authorsList) == 0:
+                        newAuthor = Author(authorSurname, authorFirstname)
+                        self.authorsList.append(newAuthor)
+                        bookObj.authors.append(newAuthor)
+                    added = False
+                    for authorsObj in self.authorsList:
                         if (authorsObj == Author(authorSurname, authorFirstname)):
-                            pass
-                        else:
-                            # if author is not yet created, create and add to list
-                            # NOTE birth and death yesars currently not recorded
-                            authorsList.append(Author(authorSurname, authorFirstname))
+                            bookObj.authors.append(authorsObj)
+                            added = True
+                        
+                    # if author is not yet created, create and add to list
+                    # NOTE birth and death yesars currently not recorded
+                    if added == False:
+                        newAuthor = Author(authorSurname, authorFirstname)
+                        self.authorsList.append(newAuthor)
+                        bookObj.authors.append(newAuthor)
+                self.booksList.append(bookObj)
+        print(self.booksList)
+        print(self.authorsList)
 
                 # string manipulation
         # for each line:
@@ -122,3 +136,7 @@ class BooksDataSource:
         # sort by year
         return []
 
+def main():
+    BooksDataSourceObject = BooksDataSource("books1.csv")
+
+main()
