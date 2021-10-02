@@ -8,12 +8,12 @@
 # robust error messaging - for when we do multiple things in one test
 # use more of the unittest library ?
 
-import booksdatasource
+from booksdatasource import Author, Book, BooksDataSource
 import unittest
 
 class BooksDataSourceTester(unittest.TestCase):
     def setUp(self):
-        self.data_source = booksdatasource.BooksDataSource('books1.csv')
+        self.data_source = BooksDataSource('books1.csv')
 
     def tearDown(self):
         pass
@@ -83,7 +83,7 @@ class BooksDataSourceTester(unittest.TestCase):
 ## tests search string with space
     def test_books_space(self):
         books = self.data_source.books("e, t")
-        self.assertTrue(books[0] == Book("There, There"))
+        self.assertTrue(books[0] == Book("Fine, Thanks"))
 
 ## tests search string with number
     def test_books_number(self):
@@ -125,7 +125,7 @@ class BooksDataSourceTester(unittest.TestCase):
             self.data_source.books_between_years(start_year='2020', end_year="1759")
 
 ## test the case when the input year does not correct format   
-    def test_years_wrong_order(self):
+    def test_years_wrong_input(self):
         with self.assertRaises(TypeError):
             self.data_source.books_between_years(start_year='abc')
 

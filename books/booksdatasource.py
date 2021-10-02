@@ -17,6 +17,12 @@ class Author:
         ''' For simplicity, we're going to assume that no two authors have the same name. '''
         return self.surname == other.surname and self.given_name == other.given_name
 
+    def getFullname(self):
+        return self.given_name + " " + self.surname
+
+    def getName(self):
+        return self.surname + ", " + self.given_name
+
 class Book:
     def __init__(self, title='', publication_year=None, authors=[]):
         ''' Note that the self.authors instance variable is a list of
@@ -30,6 +36,12 @@ class Book:
             no two books have the same title, so "same title" is the same
             thing as "same book". '''
         return self.title == other.title
+    
+    def getTitle(self):
+        return self.title
+    
+    def getPubYear(self):
+        return int(self.publication_year)
 
 class BooksDataSource:
     def __init__(self, books_csv_file_name):
@@ -67,12 +79,7 @@ class BooksDataSource:
                         self.authorsList.append(newAuthor)
                         bookObj.authors.append(newAuthor)
                 self.booksList.append(bookObj)
-        #print(self.booksList)
-        #print(self.authorsList)
-        #display_books(self.booksList)
 
-
-        # sort by defaults - check sorted python docs or numpy sorting
         ''' The books CSV file format looks like this:
 
                 title,publication_year,author_description
@@ -94,10 +101,15 @@ class BooksDataSource:
             returns all of the Author objects. In either case, the returned list is sorted
             by surname, breaking ties using given name (e.g. Ann Brontë comes before Charlotte Brontë).
         '''
-        # make a new empty list
-        # iterate through authors list, if search text is in name, add to new list
-        # sort
-        return []
+        searchList = []
+        if search_text == None:
+            return self.author_sort(self.authorsList)
+        else:
+            search_text = search_text.lower()
+            for author in self.authorsList:
+                if search_text in author.getFullname().lower():
+                    searchList.append(author)
+        return self.author_sort(searchList)
 
     def books(self, search_text=None, sort_by='title'):
         ''' Returns a list of all the Book objects in this data source whose
@@ -111,10 +123,25 @@ class BooksDataSource:
                 default -- same as 'title' (that is, if sort_by is anything other than 'year'
                             or 'title', just do the same thing you would do for 'title')
         '''
+        searchList = []
+        if search_text == None:
+            searchList = self.booksList
+        else:
+            search_text = search_text.lower()
+            for book in self.booksList:
+                if search_text in book.getTitle().lower():
+                    searchList.append(book)
+
+        if sort_by == 'title':
+            searchList = self.book_sort(searchList)
+        elif sort_by == 'year':
+            searchList = self.year_sort(searchList)
+        return searchList
+
+
         # make new empty list
         # put books with search text in list
         # if sorting is specified - sort
-        return []
 
     def books_between_years(self, start_year=None, end_year=None):
         ''' Returns a list of all the Book objects in this data source whose publication
@@ -131,15 +158,61 @@ class BooksDataSource:
         # make new empty list
         # books with valid publication date in range get added to list
         # sort by year
-        return []
+        
+        searchList = []
+        if start_year == None and end_year == None:
+            return self.year_sort(self.booksList)
+        
+        if start_year == None:
+            start_year = 0
+        elif start_year.isdigit() == False:
+            raise TypeError("Year input is not a number")
+        else:
+            start_year = int(start_year)
+        if end_year == None:
+            end_year = 2021
+        elif end_year.isdigit() == False:
+            raise TypeError("Year input is not a number")
+        else:
+            end_year = int(end_year)
+        
+        if start_year > end_year:
+            raise ValueError("Wrong order of year")
 
-    def display_books(self, booksList):
-        for book in booksList:
+
+
+        for book in self.booksList:
+            if book.getPubYear() <= end_year and book.getPubYear() >= start_year:
+                searchList.append(book)
+
+        return self.year_sort(searchList)
+
+    def display_books(self, books):
+        for book in books:
             print(book.title + " " + str(book.publication_year))
         pass
 
+    def display_authors(self, authors):
+        for author in authors:
+            print(author.getFullname())
+        pass
+
+    def author_sort(self, authors):
+        authors = sorted(authors, key=Author.getName)
+        return authors
+
+    def book_sort(self, books):
+        books = sorted(books, key=Book.getTitle)
+        return books
+
+    def year_sort(self, books):
+        books = sorted(books, key=Book.getPubYear)
+        return books
+
+
 def main():
     BooksDataSourceObject = BooksDataSource("books1.csv")
-    BooksDataSourceObject.display_books(BooksDataSourceObject.booksList)
+    BooksDataSourceObject.display_books(BooksDataSourceObject.books("e, t"))
+    #BooksDataSourceObject.display_books(BooksDataSourceObject.books_between_years())
 
 main()
