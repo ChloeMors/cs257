@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 '''
     booksdatasource.py
-    Chloe Morscheck and Xinyan Xiang, 2 September 2021
+    Chloe Morscheck and Xinyan Xiang, 2 Oct 2021
 '''
 
 import csv
@@ -59,7 +59,7 @@ class BooksDataSource:
                     authorVars = authorString.split(" ")
                     authorSurname = authorVars[-2]
                     if (len(authorVars) == 4):
-                        authorFirstname = authorVars[0] + authorVars[1]
+                        authorFirstname = authorVars[0] + " " + authorVars[1]
                     else:
                         authorFirstname = authorVars[0]
                     if len(self.authorsList) == 0:
@@ -189,7 +189,10 @@ class BooksDataSource:
 
     def display_books(self, books):
         for book in books:
-            print(book.title + " " + str(book.publication_year))
+            authorString = book.authors[0].getFullname()
+            if len(book.authors) == 2:
+                authorString = authorString + "and " + book.authors[1].getFullname()
+            print(book.title + " by " + authorString + ", " + str(book.getPubYear()))
         pass
 
     def display_authors(self, authors):
@@ -212,7 +215,7 @@ class BooksDataSource:
 
 def main():
     BooksDataSourceObject = BooksDataSource("books1.csv")
-    BooksDataSourceObject.display_books(BooksDataSourceObject.books("e, t"))
+    #BooksDataSourceObject.display_books(BooksDataSourceObject.books("e, t"))
     #BooksDataSourceObject.display_books(BooksDataSourceObject.books_between_years())
 
 main()
