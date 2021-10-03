@@ -1,7 +1,7 @@
                      Chloe and Xinyan's books.py usage.txt                   
 
 NAME
-     books.py -- search books list
+     python3 books.py -- search books list
 
 SYNOPSIS
      books.py [[-t [titleString]] [-s ['title' | 'year']]
@@ -54,3 +54,9 @@ DESCRIPTION
      It is an error for improper inputs, such as "abc" with the -y flag. 
 
      It is an error if no string follows -s.
+
+     Example code: python3 books.py -t "the" -s year
+                   python3 books.py -a "e"
+                   python3 books.py -y "- 2010"
+     
+     
