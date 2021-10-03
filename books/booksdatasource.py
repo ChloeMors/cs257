@@ -191,13 +191,23 @@ class BooksDataSource:
         for book in books:
             authorString = book.authors[0].getFullname()
             if len(book.authors) == 2:
-                authorString = authorString + "and " + book.authors[1].getFullname()
-            print(book.title + " by " + authorString + ", " + str(book.getPubYear()))
+                authorString = authorString + " and " + book.authors[1].getFullname()
+            print(book.title + " by " + authorString + ", published in " + str(book.getPubYear()))
         pass
 
     def display_authors(self, authors):
         for author in authors:
-            print(author.getFullname())
+            filename = "books1.csv"
+            with open(filename, 'r') as csvfile:
+                csvreader = csv.reader(csvfile)
+                for row in csvreader:
+                    if author.getFullname() in row[2]:
+                        print(row[2] + ", " + row[0] + " published in " + row[1]) 
+                    
+                
+
+
+
         pass
 
     def author_sort(self, authors):
