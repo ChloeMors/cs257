@@ -7,7 +7,7 @@
 import csv
 
 class Author:
-    def __init__(self, surname='', given_name='', birth_year=None, death_year=None):
+    def __init__(self, surname="", given_name="", birth_year=None, death_year=None):
         self.surname = surname
         self.given_name = given_name
         self.birth_year = birth_year
@@ -17,14 +17,14 @@ class Author:
         ''' For simplicity, we're going to assume that no two authors have the same name. '''
         return self.surname == other.surname and self.given_name == other.given_name
 
-    def getFullname(self):
+    def get_fullname(self):
         return self.given_name + " " + self.surname
 
-    def getName(self):
+    def get_name(self):
         return self.surname + ", " + self.given_name
 
 class Book:
-    def __init__(self, title='', publication_year=None, authors=[]):
+    def __init__(self, title="", publication_year=None, authors=[]):
         ''' Note that the self.authors instance variable is a list of
             references to Author objects. '''
         self.title = title
@@ -37,48 +37,48 @@ class Book:
             thing as "same book". '''
         return self.title == other.title
     
-    def getTitle(self):
+    def get_title(self):
         return self.title
     
-    def getPubYear(self):
+    def get_pub_year(self):
         return int(self.publication_year)
 
 class BooksDataSource:
     def __init__(self, books_csv_file_name):
-        self.booksList = []
-        self.authorsList = []
+        self.books_list = []
+        self.authors_list = []
         filename = "books1.csv"
-        with open(filename, 'r') as csvfile:
+        with open(filename, "r") as csvfile:
             csvreader = csv.reader(csvfile)
             for row in csvreader:
                 # Check for author
                 # Do the book checker
-                bookObj = Book(row[0],int(row[1]),[])
-                authorStringList = row[2].split(" and ")
-                for authorString in authorStringList:
-                    authorVars = authorString.split(" ")
-                    authorSurname = authorVars[-2]
-                    if (len(authorVars) == 4):
-                        authorFirstname = authorVars[0] + " " + authorVars[1]
+                book_new = Book(row[0],int(row[1]),[])
+                author_string_list = row[2].split(" and ")
+                for author_string in author_string_list:
+                    author_vars = author_string.split(" ")
+                    author_surname = author_vars[-2]
+                    if (len(author_vars) == 4):
+                        author_firstname = author_vars[0] + " " + author_vars[1]
                     else:
-                        authorFirstname = authorVars[0]
-                    if len(self.authorsList) == 0:
-                        newAuthor = Author(authorSurname, authorFirstname)
-                        self.authorsList.append(newAuthor)
-                        bookObj.authors.append(newAuthor)
+                        author_firstname = author_vars[0]
+                    if len(self.authors_list) == 0:
+                        author_new = Author(author_surname, author_firstname)
+                        self.authors_list.append(author_new)
+                        book_new.authors.append(author_new)
                     added = False
-                    for authorsObj in self.authorsList:
-                        if (authorsObj == Author(authorSurname, authorFirstname)):
-                            bookObj.authors.append(authorsObj)
+                    for author in self.authors_list:
+                        if (author == Author(author_surname, author_firstname)):
+                            book_new.authors.append(author)
                             added = True
                         
                     # if author is not yet created, create and add to list
                     # NOTE birth and death yesars currently not recorded
                     if added == False:
-                        newAuthor = Author(authorSurname, authorFirstname)
-                        self.authorsList.append(newAuthor)
-                        bookObj.authors.append(newAuthor)
-                self.booksList.append(bookObj)
+                        author_new = Author(author_surname, author_firstname)
+                        self.authors_list.append(author_new)
+                        book_new.authors.append(author_new)
+                self.books_list.append(book_new)
 
         ''' The books CSV file format looks like this:
 
@@ -101,42 +101,42 @@ class BooksDataSource:
             returns all of the Author objects. In either case, the returned list is sorted
             by surname, breaking ties using given name (e.g. Ann Brontë comes before Charlotte Brontë).
         '''
-        searchList = []
+        search_list = []
         if search_text == None:
-            return self.author_sort(self.authorsList)
+            return self.author_sort(self.authors_list)
         else:
             search_text = search_text.lower()
-            for author in self.authorsList:
-                if search_text in author.getFullname().lower():
-                    searchList.append(author)
-        return self.author_sort(searchList)
+            for author in self.authors_list:
+                if search_text in author.get_fullname().lower():
+                    search_list.append(author)
+        return self.author_sort(search_list)
 
-    def books(self, search_text=None, sort_by='title'):
+    def books(self, search_text=None, sort_by="title"):
         ''' Returns a list of all the Book objects in this data source whose
             titles contain (case-insensitively) search_text. If search_text is None,
             then this method returns all of the books objects.
 
             The list of books is sorted in an order depending on the sort_by parameter:
 
-                'year' -- sorts by publication_year, breaking ties with (case-insenstive) title
-                'title' -- sorts by (case-insensitive) title, breaking ties with publication_year
-                default -- same as 'title' (that is, if sort_by is anything other than 'year'
-                            or 'title', just do the same thing you would do for 'title')
+                "year" -- sorts by publication_year, breaking ties with (case-insenstive) title
+                "title" -- sorts by (case-insensitive) title, breaking ties with publication_year
+                default -- same as "title" (that is, if sort_by is anything other than "year"
+                            or "title", just do the same thing you would do for "title")
         '''
-        searchList = []
+        search_list = []
         if search_text == None:
-            searchList = self.booksList
+            search_list = self.books_list
         else:
             search_text = search_text.lower()
-            for book in self.booksList:
-                if search_text in book.getTitle().lower():
-                    searchList.append(book)
+            for book in self.books_list:
+                if search_text in book.get_title().lower():
+                    search_list.append(book)
 
-        if sort_by == 'title':
-            searchList = self.book_sort(searchList)
-        elif sort_by == 'year':
-            searchList = self.year_sort(searchList)
-        return searchList
+        if sort_by == "title":
+            search_list = self.book_sort(search_list)
+        elif sort_by == "year":
+            search_list = self.year_sort(search_list)
+        return search_list
 
 
         # make new empty list
@@ -154,14 +154,10 @@ class BooksDataSource:
             during start_year should be included. If both are None, then all books
             should be included.
         '''
-        # define a range, error check
-        # make new empty list
-        # books with valid publication date in range get added to list
-        # sort by year
         
-        searchList = []
+        search_list = []
         if start_year == None and end_year == None:
-            return self.year_sort(self.booksList)
+            return self.year_sort(self.books_list)
         
         if start_year == None:
             start_year = 0
@@ -179,53 +175,55 @@ class BooksDataSource:
         if start_year > end_year:
             raise ValueError("Wrong order of year")
 
+        for book in self.books_list:
+            if book.get_pub_year() <= end_year and book.get_pub_year() >= start_year:
+                search_list.append(book)
 
-
-        for book in self.booksList:
-            if book.getPubYear() <= end_year and book.getPubYear() >= start_year:
-                searchList.append(book)
-
-        return self.year_sort(searchList)
+        return self.year_sort(search_list)
 
     def display_books(self, books):
         for book in books:
-            authorString = book.authors[0].getFullname()
+            author_string = book.authors[0].get_fullname()
             if len(book.authors) == 2:
-                authorString = authorString + " and " + book.authors[1].getFullname()
-            print(book.title + " by " + authorString + ", published in " + str(book.getPubYear()))
+                author_string = author_string + " and " + book.authors[1].get_fullname()
+            print(book.title + " by " + author_string + ", published in " + str(book.get_pub_year()))
         pass
 
     def display_authors(self, authors):
         for author in authors:
             filename = "books1.csv"
-            with open(filename, 'r') as csvfile:
+            with open(filename, "r") as csvfile:
                 csvreader = csv.reader(csvfile)
                 for row in csvreader:
-                    if author.getFullname() in row[2]:
+                    if author.get_fullname() in row[2]:
                         print(row[2] + ", " + row[0] + " published in " + row[1]) 
-                    
-                
+        pass
 
-
-
+    def display_authors2(self, authors):
+        for author in authors:
+            print(author.get_fullname() + ", " )
+            for book in self.books_list:
+                for author_of_book in book.authors:
+                    if author == author_of_book:
+                        print("  -  " + book.get_title() + " published in " + str(book.get_pub_year()))
         pass
 
     def author_sort(self, authors):
-        authors = sorted(authors, key=Author.getName)
+        authors = sorted(authors, key=Author.get_name)
         return authors
 
     def book_sort(self, books):
-        books = sorted(books, key=Book.getTitle)
+        books = sorted(books, key=Book.get_title)
         return books
 
     def year_sort(self, books):
-        books = sorted(books, key=Book.getPubYear)
+        books = sorted(books, key=Book.get_pub_year)
         return books
 
 
 def main():
     BooksDataSourceObject = BooksDataSource("books1.csv")
-    #BooksDataSourceObject.display_books(BooksDataSourceObject.books("e, t"))
-    #BooksDataSourceObject.display_books(BooksDataSourceObject.books_between_years())
+    authors = BooksDataSourceObject.authors()
+    BooksDataSourceObject.display_authors2(authors)
 
 main()
