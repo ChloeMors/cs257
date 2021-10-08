@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 '''
     booksdatasource.py
-    Chloe Morscheck and Xinyan Xiang, 2 Oct 2021
+    Chloe Morscheck and Xinyan Xiang, 11 Oct 2021
 '''
 
 import csv
@@ -16,6 +16,14 @@ class Author:
     def __eq__(self, other):
         ''' For simplicity, we're going to assume that no two authors have the same name. '''
         return self.surname == other.surname and self.given_name == other.given_name
+    
+    # Credits to Simon and Anders for the __str__ and __repr__ ideas
+    
+    def __str__(self):
+        return self.given_name + " " + self.surname
+    
+    def __repr__(self):
+        return self.__str__() 
 
     def get_fullname(self):
         return self.given_name + " " + self.surname
@@ -37,6 +45,12 @@ class Book:
             thing as "same book". '''
         return self.title == other.title
     
+    def __str__(self):
+        return self.title + " by " + str(self.authors) + ", published in " + str(self.publication_year)
+    
+    def __repr__(self):
+        return self.__str__()
+
     def get_title(self):
         return self.title
     
@@ -62,10 +76,6 @@ class BooksDataSource:
                         author_firstname = author_vars[0] + " " + author_vars[1]
                     else:
                         author_firstname = author_vars[0]
-                    if len(self.authors_list) == 0:
-                        author_new = Author(author_surname, author_firstname)
-                        self.authors_list.append(author_new)
-                        book_new.authors.append(author_new)
                     added = False
                     for author in self.authors_list:
                         if (author == Author(author_surname, author_firstname)):
@@ -201,7 +211,7 @@ class BooksDataSource:
 
     def display_authors2(self, authors):
         for author in authors:
-            print(author.get_fullname() + ", " )
+            print(author.get_fullname())
             for book in self.books_list:
                 for author_of_book in book.authors:
                     if author == author_of_book:

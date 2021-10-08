@@ -1,6 +1,6 @@
 '''
     booksdatasource.py
-    Chloe Morscheck and Xinyan Xiang, 2 Oct 2021
+    Chloe Morscheck and Xinyan Xiang, 11 Oct 2021
 '''
 '''
 Comments from people:
@@ -10,20 +10,22 @@ revise args
 year string stuff
 books init and magic numbers - look at andersshenholm
 search in getName and get fullname for author search
-probably can delete lines 65-68 in booksdatasource
+
 revise main
-__str__ and __repr__ functions
+revise and use __str__ and __repr__ functions
 hardcoded filename
 list1 in main - Xinyan
 string formatting  - Xinyan
 dont use "none" as default  - Xinyan
 redo usage
-display functions: I wrote a display authors 2 - we might want to reconsider where these functions go
+display functions: I wrote a display authors 2 - we might want to rethink where these functions go
  - should they be functions in the author class?
 
 done:
 snake case - chloe
 double quotes - chloe
+probably can delete lines 65-68 in booksdatasource
+added str and repr functinos but Im not sure theyre right, and I didnt use them anywhere
 '''
 from booksdatasource import Author, Book, BooksDataSource
 
@@ -76,10 +78,10 @@ def main():
         if arguments.author == "None":
             print(bcolors.WARNING + "Note: Since you did not specify any strings for authors , here are all authors in this database." + bcolors.ENDC)
             list1 = books_data_source.authors()
-            books_data_source.display_authors(list1)
+            books_data_source.display_authors2(list1)
         else: 
             list1 = books_data_source.authors(search_text=arguments.author)
-            books_data_source.display_authors(list1)
+            books_data_source.display_authors2(list1)
     if arguments.year:
         if arguments.year == "None":
             print(bcolors.WARNING + "Note: Since you did not specify any years for authors , here are all authors in this database." +  bcolors.ENDC)
