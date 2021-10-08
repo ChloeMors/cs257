@@ -78,10 +78,10 @@ def main():
         if arguments.author == "None":
             print(bcolors.WARNING + "Note: Since you did not specify any strings for authors , here are all authors in this database." + bcolors.ENDC)
             list1 = books_data_source.authors()
-            books_data_source.display_authors2(list1)
+            books_data_source.display_authors(list1)
         else: 
             list1 = books_data_source.authors(search_text=arguments.author)
-            books_data_source.display_authors2(list1)
+            books_data_source.display_authors(list1)
     if arguments.year:
         if arguments.year == "None":
             print(bcolors.WARNING + "Note: Since you did not specify any years for authors , here are all authors in this database." +  bcolors.ENDC)
