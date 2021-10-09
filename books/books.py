@@ -2,33 +2,7 @@
     booksdatasource.py
     Chloe Morscheck and Xinyan Xiang, 11 Oct 2021
 '''
-'''
-Comments from people:
-range of 0-2021 for default years - is this okay?
-more comments to explain what is going on 
-revise args 
-year string stuff
-books init and magic numbers - look at andersshenholm
-search in getName and get fullname for author search
 
-revise main
-revise and use __str__ and __repr__ functions
-hardcoded filename
-
-string formatting  - Xinyan
-
-redo usage
-display functions: I wrote a display authors 2 - we might want to rethink where these functions go
- - should they be functions in the author class?
-
-done:
-snake case - chloe
-double quotes - chloe
-probably can delete lines 65-68 in booksdatasource
-added str and repr functinos but Im not sure theyre right, and I didnt use them anywhere
-list1 in main - Xinyan
-dont use "empty" as default  - Xinyan
-'''
 from booksdatasource import Author, Book, BooksDataSource
 
 import argparse
@@ -50,9 +24,11 @@ def get_parsed_arguments():
     parser.add_argument("-t", "--title", const = "empty", nargs="?") 
     parser.add_argument("-a", "--author", nargs="?", const="empty") 
     parser.add_argument("-y", "--year", nargs="?", const="empty") 
-    parser.add_argument("-s", nargs=1, default="title", choices=["year", "title"])
+    parser.add_argument("-s", "--startyear", nargs=1, default="empty")
+    parser.add_argument("-e", "--endyear", nargs=1, default="empty")
+    parser.add_argument("-bs", "--booksort", nargs=1, default="title", choices=["year", "title"])
     parser.add_argument("-h", "--help", action = "store_true", dest="hi")
-    parser.add_argument("-v", "--version", action="version", version = "%(prog)s 1.0, Chloe Morscheck and Xinyan Xiang, CS 257, Oct 2, 2021")
+    parser.add_argument("-v", "--version", action="version", version = "%(prog)s 2.0, Chloe Morscheck and Xinyan Xiang, CS 257, Oct 2, 2021")
     parsed_arguments = parser.parse_args()
     return parsed_arguments
 
@@ -65,40 +41,39 @@ def main():
         file_contents = f.read()
         print(file_contents)
         f.close
-    books_data_source = BooksDataSource("books1.csv")  
+    filename = "books1.csv"
+    books_data_source = BooksDataSource(filename)  
     books_list = []
 
     if arguments.title:
         if arguments.title == "empty":
-            print(bcolors.WARNING + "Note: Since you did not specify any strings for books, here are all books in this database." + bcolors.ENDC)
-            books_list = books_data_source.books(sort_by=arguments.s[0])
-            books_data_source.display_books(books_list)
+            print(f"{bcolors.WARNING}Note: Since you did not specify any strings for books, here are all books in this database. {bcolors.ENDC}")
+            search_text=None
         else:
-            books_list = books_data_source.books(search_text=arguments.title, sort_by=arguments.s[0])
-            books_data_source.display_books(books_list)
+            search_text = arguments.title
+        books_list = books_data_source.books(search_text=search_text, sort_by=arguments.booksort[0])
+        books_data_source.display_books(books_list)
     if arguments.author:
         if arguments.author == "empty":
-            print(bcolors.WARNING + "Note: Since you did not specify any strings for authors , here are all authors in this database." + bcolors.ENDC)
-            books_list = books_data_source.authors()
-            books_data_source.display_authors(books_list)
+            print(f"{bcolors.WARNING}Note: Since you did not specify any strings for authors, here are all authors in this database. {bcolors.ENDC}")
+            search_text=None
         else: 
-            books_list = books_data_source.authors(search_text=arguments.author)
-            books_data_source.display_authors(books_list)
+            search_text=arguments.author
+        books_list = books_data_source.authors(search_text=search_text)
+        books_data_source.display_authors(books_list)
     if arguments.year:
-        if arguments.year == "empty":
-            print(bcolors.WARNING + "Note: Since you did not specify any years for authors , here are all authors in this database." +  bcolors.ENDC)
-            books_list = books_data_source.books_between_years()
-        elif "-" in arguments.year:
-            year_list = arguments.year.split(" ")
-            if len(year_list) == 3:             
-                books_list = books_data_source.books_between_years(start_year = year_list[0], end_year = year_list[2])
-            else:
-                if year_list[0].isdigit(): 
-                    books_list = books_data_source.books_between_years(start_year = year_list[0])
-                else:
-                    books_list = books_data_source.books_between_years(end_year = year_list[1])
-        else: 
-            books_list = books_data_source.books_between_years(start_year = arguments.year, end_year = arguments.year)        
+        if arguments.startyear == "empty":
+            startyear = None
+        else:
+            startyear = arguments.startyear[0]
+        if arguments.endyear =="empty":
+            endyear = None
+        else:
+            endyear = arguments.endyear[0]   
+        if startyear == None and endyear == None:
+            print(f"{bcolors.WARNING}Note: Since you did not specify any strings for years, here are all books in this database. {bcolors.ENDC}")
+            
+        books_list = books_data_source.books_between_years(startyear, endyear)       
         books_data_source.display_books(books_list)
 
 

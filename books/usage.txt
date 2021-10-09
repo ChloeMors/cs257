@@ -3,60 +3,63 @@
 NAME
      python3 books.py -- search books list
 
+
 SYNOPSIS
-     books.py [[-t [titleString]] [-s ['title' | 'year']]
-     books.py [-a [authorString]] | [-y [yearString]]
-     books.py [-h] 
-     books.py [-v]
+     books.py -t [titleString] [-bs 'title' | 'year']
+     books.py -y [-s STARTYEAR] [-e ENDYEAR]
+     books.py -a [authorString]
+     books.py -h
+     books.py -v
 
 DESCRIPTION
-     In its first form, books.py will search through a books database by flag
-     (title, author, or year) for searchString, or applicable years for -y,
-     and returns a list of books. Only a single search (-t, -a, -y) flag can 
-     be used at a time. -s indicates a sorting override, to use with -t.
-
-     In its second and third forms, users can view help or version statements. 
+     Books.py will search through the database by flags: it can search for 
+     strings within titles, author names, or search for books published in 
+     a year range. Only one of -t, -y, or -a can be used at a time. 
+	
+     Users can also view help and version statements. 
 
      The following options are available:
 
 
 
-     -t --title      Search database for titles containing searchString
+     -t --title     Search database for titles containing titleString
 	     (case-insensitive), returning list of books sorted by title.
 	     Search strings including space characters need to be surrounded
-             By quotations 
+             By quotations. If no titleString provided, prints all books.
 
-     -a --author     Search database for authors containing searchString
+     -a --author    Search database for authors containing authorString
 	     (case-insensitive), returning list of books sorted by surname,
 	     ties broken by given name. Search strings including space 
-	     characters need to be surrounded by quotations 
+	     characters need to be surrounded by quotations. If no authorString
+	     provided, prints all authors. 
 
-     -y --year     Search database for books published within year range,
+     -y --year      Search database for books published within year range,
 	     inclusive, returning list of books sorted by publication year.
-	     range should be two years separated by a hyphen with spaces
-	     (e.g. "1900 - 1901") or one year ("1900") or a year with a 
-	     hyphen to indicate an unbounded search ("1900 -" or "- 1900"). 
-	     The user need to include quotations around the year range. 
-	     Please note, if you add a space before or after a hyphen when 
-	     there's not a number on the other side (" - 1999") the program 
-	     will fail. 
+	     Range indicated by -s and -e flags. If no flags provided, will
+	     print all books. Default values for -s is 0, and for -e is 
+	     a very large integer. 
 
-     -s --sort	  Override sorting list by alternative criteria. Options are 
-	     title or year
+     -s --startyear Optional flag for -y, specifying start year. One integer
+	     required. 
 
+     -e --endyear   Optional flag for -y, specifying end year. One integer
+	     required. 
++
+     -bs --booksort Optional flag for -t. Override sorting list by alternative 
+	     criteria. Options are title or year.
 
      -h --help      Print usage statement
 
-     -v --version     Print version
+     -v --version   Print version
 
 
 
      It is an error for improper inputs, such as "abc" with the -y flag. 
 
-     It is an error if no string follows -s.
+     It is an error if no string follows -bs.
 
-     Example code: python3 books.py -t "the" -s year
+     Example code: python3 books.py -t "the" -bs year
                    python3 books.py -a "e"
-                   python3 books.py -y "- 2010"
+                   python3 books.py -y -s 2010 -e 2020
      
      
