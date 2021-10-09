@@ -199,17 +199,8 @@ class BooksDataSource:
             print(book.title + " by " + author_string + ", published in " + str(book.get_pub_year()))
         pass
 
-    def display_authors(self, authors):
-        for author in authors:
-            filename = "books1.csv"
-            with open(filename, "r") as csvfile:
-                csvreader = csv.reader(csvfile)
-                for row in csvreader:
-                    if author.get_fullname() in row[2]:
-                        print(row[2] + ", " + row[0] + " published in " + row[1]) 
-        pass
 
-    def display_authors2(self, authors):
+    def display_authors(self, authors):
         for author in authors:
             print(author.get_fullname())
             for book in self.books_list:
@@ -231,9 +222,3 @@ class BooksDataSource:
         return books
 
 
-def main():
-    BooksDataSourceObject = BooksDataSource("books1.csv")
-    authors = BooksDataSourceObject.authors()
-    BooksDataSourceObject.display_authors2(authors)
-
-main()
