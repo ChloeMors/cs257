@@ -61,7 +61,7 @@ class BooksDataSource:
     def __init__(self, books_csv_file_name):
         self.books_list = []
         self.authors_list = []
-        filename = "books1.csv"
+        filename = books_csv_file_name
         with open(filename, "r") as csvfile:
             csvreader = csv.reader(csvfile)
             for row in csvreader:
