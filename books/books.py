@@ -9,18 +9,16 @@ import argparse
 
 # some colors we need for our outputs
 class bcolors:
-    HEADER = "\033[95m"
-    OKBLUE = "\033[94m"
-    OKCYAN = "\033[96m"
-    OKGREEN = "\033[92m"
+    OKGREEN = "\033[0;32m"
     WARNING = "\033[31m"
-    FAIL = "\033[91m"
     ENDC = "\033[0m"
     BOLD = "\033[1m"
     UNDERLINE = "\033[4m"
 
-# Create an ArgumentParser object and fill it with information about command lines utilized by this program arguments.
 def get_parsed_arguments():
+    ''' Create an ArgumentParser object and fill it with information about command lines 
+    utilized by this program arguments.
+    '''
     parser = argparse.ArgumentParser(add_help=False, description="Search and sort books and authors.")
     parser.add_argument("-t", "--title", const = "empty", nargs="?") 
     parser.add_argument("-a", "--author", nargs="?", const="empty") 
@@ -38,12 +36,14 @@ def main():
     filename = "books1.csv"
     books_data_source = BooksDataSource(filename)  
     books_list = []
+
     # When the user types the help flag (-h): print the command-line documentation 
     if arguments.help_me:
         f = open("usage.txt", "r")
         file_contents = f.read()
         print(file_contents)
         f.close
+
     # When the user types the title flag (-t) and / or the book sorting flag (-bs)
     if arguments.title:
         if arguments.title == "empty":
@@ -53,6 +53,7 @@ def main():
             search_text = arguments.title
         books_list = books_data_source.books(search_text=search_text, sort_by=arguments.booksort[0])
         books_data_source.display_books(books_list)
+
     # When the user types the author flag (-a)
     if arguments.author:
         if arguments.author == "empty":
@@ -62,6 +63,7 @@ def main():
             search_text=arguments.author
         books_list = books_data_source.authors(search_text=search_text)
         books_data_source.display_authors(books_list)
+
     # When the user types the year flag (-y) and / or the date flags (-s and and -e )
     if arguments.year:
         if arguments.startyear == "empty":

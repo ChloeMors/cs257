@@ -2,9 +2,6 @@
    booksdatasourcetest.py
    Chloe Morscheck Xinyan Xiang, 27 September 2021
 '''
-# Questions for future chloe and xinyan
-# robust error messaging - for when we do multiple things in one test
-# use more of the unittest library ?
 
 from booksdatasource import Author, Book, BooksDataSource
 import unittest

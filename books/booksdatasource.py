@@ -8,16 +8,11 @@ import csv
 
 # some colors we need for our outputs
 class bcolors:
-    HEADER = "\033[95m"
-    OKBLUE = "\033[94m"
-    OKCYAN = "\033[96m"
     OKGREEN = "\033[0;32m"
     WARNING = "\033[31m"
-    FAIL = "\033[91m"
     ENDC = "\033[0m"
     BOLD = "\033[1m"
     UNDERLINE = "\033[4m"
-    BLINK = "\033[5m"
 
 class Author:
     def __init__(self, surname="", given_name="", birth_year=None, death_year=None):
@@ -29,11 +24,13 @@ class Author:
     def __eq__(self, other):
         ''' For simplicity, we're going to assume that no two authors have the same name. '''
         return self.surname == other.surname and self.given_name == other.given_name
-    # get an author's name in the format of "given_name surname"
+   
     def get_fullname(self):
+        ''' Get an author's name in the format of "given_name surname" '''
         return self.given_name + " " + self.surname
-    # get an author's name in the format of "given_name, surname"
+    
     def get_name(self):
+        ''' Get an author's name in the format of "surname, given_name" '''
         return self.surname + ", " + self.given_name
 
 class Book:
@@ -51,56 +48,16 @@ class Book:
         return self.title == other.title
 
     def get_title(self):
+        ''' Get an book's title string '''
         return self.title
     
     def get_pub_year(self):
+        ''' Get a book's publication year as an integer '''
         return int(self.publication_year)
 
 class BooksDataSource:
+    MAX_YEAR = 10000
     def __init__(self, books_csv_file_name):
-        self.books_list = []
-        self.authors_list = []
-        filename = books_csv_file_name
-        # Index numbers
-        title_index = 0
-        pub_year_index = 1
-        author_index = 2
-        author_surname_index = -2
-        # Open csv
-        with open(filename, "r") as csvfile:
-            csvreader = csv.reader(csvfile)
-            for row in csvreader:
-                # init book with no authors
-                book_new = Book(row[title_index],int(row[pub_year_index]),[])
-                author_string_list = row[author_index].split(" and ")
-                # iterate over authors data to create new author objects
-                for author_string in author_string_list:
-                    author_vars = author_string.split(" ")
-                    author_surname = author_vars[author_surname_index]
-                    # If there are four vars, author has a middle name
-                    if (len(author_vars) == 4):
-                        # if so, get first and second fields
-                        author_firstname = author_vars[0] + " " + author_vars[1]
-                    else:
-                        # else, just get first
-                        author_firstname = author_vars[0]
-                    added = False
-                    # Check if author is alreay created 
-                    for author in self.authors_list:
-                        if (author == Author(author_surname, author_firstname)):
-                            # if found, add to book author list
-                            book_new.authors.append(author)
-                            added = True
-                        
-                    # if author is not yet created, create and add to list
-                    # NOTE birth and death years currently not recorded but we don't need it for anything
-                    if added == False:
-                        author_new = Author(author_surname, author_firstname)
-                        self.authors_list.append(author_new)
-                        book_new.authors.append(author_new)
-                # Add book to list
-                self.books_list.append(book_new)
-
         ''' The books CSV file format looks like this:
 
                 title,publication_year,author_description
@@ -114,6 +71,40 @@ class BooksDataSource:
             suitable instance variables for the BooksDataSource object containing
             a collection of Author objects and a collection of Book objects.
         '''
+        self.books_list = []
+        self.authors_list = []
+        filename = books_csv_file_name
+        title_index = 0
+        pub_year_index = 1
+        author_index = 2
+        author_surname_index = -2
+
+        with open(filename, "r") as csvfile:
+            csvreader = csv.reader(csvfile)
+            for row in csvreader:
+                # init book
+                book_new = Book(row[title_index],int(row[pub_year_index]),[])
+                author_string_list = row[author_index].split(" and ")
+                # init author(s)
+                for author_string in author_string_list:
+                    author_vars = author_string.split(" ")
+                    author_surname = author_vars[author_surname_index]
+                    # If there are four vars, author has a middle name
+                    if (len(author_vars) == 4):
+                        author_firstname = author_vars[0] + " " + author_vars[1]
+                    else:
+                        author_firstname = author_vars[0]
+                    added = False
+                    # Check if author is already created 
+                    for author in self.authors_list:
+                        if (author == Author(author_surname, author_firstname)):
+                            book_new.authors.append(author)
+                            added = True
+                    if not added:
+                        author_new = Author(author_surname, author_firstname)
+                        self.authors_list.append(author_new)
+                        book_new.authors.append(author_new)
+                self.books_list.append(book_new)
         pass
 
     def authors(self, search_text=None):
@@ -182,16 +173,16 @@ class BooksDataSource:
             raise TypeError("Year input is not a number")
         else:
             start_year = int(start_year)
+
         if end_year == None:
-            # Arbitrary future date
-            end_year = 10000
+            end_year = self.MAX_YEAR
         elif end_year.isdigit() == False:
             raise TypeError("Year input is not a number")
         else:
             end_year = int(end_year)
         
         if start_year > end_year:
-            raise ValueError("Wrong order of year")
+            raise ValueError("Wrong order of years")
 
         for book in self.books_list:
             if book.get_pub_year() <= end_year and book.get_pub_year() >= start_year:
@@ -200,6 +191,7 @@ class BooksDataSource:
         return self.year_sort(search_list)
 
     def display_books(self, books):
+        ''' Display a list of books with title, author(s), and publication year'''
         for book in books:
             author_string = book.authors[0].get_fullname()
             if len(book.authors) == 2:
@@ -208,6 +200,7 @@ class BooksDataSource:
         pass
 
     def display_authors(self, authors):
+        ''' Display a list of authors with books published'''
         for author in authors:
             print(f"{bcolors.BOLD}{author.get_fullname()}{bcolors.ENDC}")
             for book in self.books_list:
@@ -216,16 +209,18 @@ class BooksDataSource:
                         print("  -  " + f"{bcolors.UNDERLINE}{book.get_title()}{bcolors.ENDC}" + " published in " + str(book.get_pub_year()))
         pass
 
-    # Sorting function for authors 
     def author_sort(self, authors):
+        ''' Sort a list of authors by name (surname, first name(s)) '''
         authors = sorted(authors, key=Author.get_name)
         return authors
-    # Sorting function for books
+
     def book_sort(self, books):
+        ''' Sort a list of books by title '''
         books = sorted(books, key=Book.get_title)
         return books
-    # Sorting function for years
+
     def year_sort(self, books):
+        ''' Sort a list of books by publication year '''
         books = sorted(books, key=Book.get_pub_year)
         return books
 
