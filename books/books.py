@@ -17,7 +17,7 @@ class bcolors:
 
 def get_parsed_arguments():
     ''' Create an ArgumentParser object and fill it with information about command lines 
-    utilized by this program arguments.
+        utilized by this program arguments.
     '''
     parser = argparse.ArgumentParser(add_help=False, description="Search and sort books and authors.")
     parser.add_argument("-t", "--title", const = "empty", nargs="?") 
