@@ -29,10 +29,10 @@ class Author:
     def __eq__(self, other):
         ''' For simplicity, we're going to assume that no two authors have the same name. '''
         return self.surname == other.surname and self.given_name == other.given_name
-
+    # get an author's name in the format of "given_name surname"
     def get_fullname(self):
         return self.given_name + " " + self.surname
-
+    # get an author's name in the format of "given_name, surname"
     def get_name(self):
         return self.surname + ", " + self.given_name
 
@@ -159,11 +159,6 @@ class BooksDataSource:
             search_list = self.year_sort(search_list)
         return search_list
 
-
-        # make new empty list
-        # put books with search text in list
-        # if sorting is specified - sort
-
     def books_between_years(self, start_year=None, end_year=None):
         ''' Returns a list of all the Book objects in this data source whose publication
             years are between start_year and end_year, inclusive. The list is sorted
@@ -212,7 +207,6 @@ class BooksDataSource:
             print(f"{bcolors.BOLD}{book.title}{bcolors.ENDC}"+ " by " + f"{bcolors.OKGREEN}{author_string}{bcolors.ENDC}" + ", published in " + str(book.get_pub_year()))
         pass
 
-
     def display_authors(self, authors):
         for author in authors:
             print(f"{bcolors.BOLD}{author.get_fullname()}{bcolors.ENDC}")
@@ -222,14 +216,15 @@ class BooksDataSource:
                         print("  -  " + f"{bcolors.UNDERLINE}{book.get_title()}{bcolors.ENDC}" + " published in " + str(book.get_pub_year()))
         pass
 
+    # Sorting function for authors 
     def author_sort(self, authors):
         authors = sorted(authors, key=Author.get_name)
         return authors
-
+    # Sorting function for books
     def book_sort(self, books):
         books = sorted(books, key=Book.get_title)
         return books
-
+    # Sorting function for years
     def year_sort(self, books):
         books = sorted(books, key=Book.get_pub_year)
         return books
