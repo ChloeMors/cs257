@@ -1,0 +1,28 @@
+Chloe's olympics.py usage.txt
+
+NAME
+	python3 olympics.py
+
+SYNOPSIS
+	olympics.py -h
+	olympics.py -n
+	olympics.py -a [NOC]
+	olympics.py -s
+
+DESCRIPTION
+	Olympics.py manipulates a database to perform searches based on
+	flags to produce data on participation in the Olympic Games.
+
+	-h -- help	Prints this usage statement
+	
+	-n --nocs	Prints all NOCs and how many gold medals they 
+			have won, in descending order
+
+	-a --athletes 	Prints all athletes that have competed under
+			the provided NOC
+
+	-s --sports	Prints all sports and how many times they have 
+			been participated in, in descending order
+
+	While no error will occur, providing an erroneous search string 
+	to -n will return an empty search. 
