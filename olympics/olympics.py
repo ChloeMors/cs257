@@ -35,7 +35,8 @@ def main():
     # Connect to the database
     try:
         connection = psycopg2.connect(database=database, user=user, password=password)
-        # The following line is not in this section of code in the lab - not sure if it works
+        # The following line is not in this section of code in the lab
+        # it works here, but I'm not sure if this is the best place to put it
         cursor = connection.cursor()
     except Exception as e:
         print(e)
