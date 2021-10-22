@@ -83,6 +83,7 @@ def main():
         
 
     if arguments.sports:
+        # Prints all sports and how many participations they have, descending
         query = '''SELECT sports.athletic_event, COUNT(participations.id)
                     FROM sports, participations
                     WHERE sports.id = participations.event_id
