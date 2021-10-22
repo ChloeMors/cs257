@@ -1,16 +1,17 @@
-CREATE TABLE athletes(
-    id int,
-    athlete_name text,
-);
-
-CREATE TABLE team(
+CREATE TABLE teams(
     id int,
     NOC text,
     team text
 );
 
+CREATE TABLE athletes(
+    id int,
+    athlete_name text
+);
+
 CREATE TABLE games(
     id int,
+    game_string text,
     game_year int,
     season text,
     city text
@@ -29,9 +30,9 @@ CREATE TABLE participations(
     game_id int,
 	event_id int,
 	ath_sex text,
-	ath_height int,
-	ath_weight int,
-	ath_age int,
-	medal text,
+	ath_height text,
+	ath_weight text,
+	ath_age text,
+	medal text
 );
 
